@@ -42,8 +42,11 @@ The output rate will equal sensor_read_rate / output_rate_divider.
 
 `adaptive_gain` and `bias_estimation` options can be turned off by setting false in the parameters.
 
+`gain_acc`, `gain_mag`, `bias_alpha` are the accel gain, mag gain and bias alpha for the complementary filter, as explained in: 
+[http://wiki.ros.org/imu_complementary_filter](http://wiki.ros.org/imu_complementary_filter)
+
 The frame_id's for the respective Imu and MagneticField messages can be setup with the `imu_frame_id` and `mag_frame_id` parameters.
 
 `gfsr` and `afsr` are gyro and accel sensitivities at system init. the defaults are 500DPS for gyro, and 4G for accel.
 
-calibration_mode sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. See CALIBRATION.md for details.
+`calibration_mode` sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. See CALIBRATION.md for details.
