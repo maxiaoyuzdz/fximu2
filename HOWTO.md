@@ -35,11 +35,10 @@ Note that rviz imu plugin is required to visualize imu data. Click Add on rviz, 
 
 ```rostopic echo /imu/mag```
 
-### measure frequency of output data
+#### measure frequency of output data
 
 ```rostopic hz /imu/data``` or ```rostopic hz /imu/mag```
 
-
-### if you are developing on ubuntu
+#### if you are developing on ubuntu
 
 ModemManager service that is default on ubuntu, probes the newly added serial ports, which keeps it busy for few second. To overcome this delay [which is important while developing] turn off the ModemManager service.
