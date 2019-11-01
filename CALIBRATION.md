@@ -26,4 +26,17 @@ The complementary filter is not initialized, and the hard iron and soft iron cor
 
 To quit screen press `ctrl-A` and `\` keys.
 
-8. Download and compile https://github.com/PaulStoffregen/MotionCal
+8. Download and compile https://github.com/PaulStoffregen/MotionCal it will require a small modification to see our virtual  `/dev/ttyCAL1` port.
+
+   a. edit portlist.cpp, near line 204 where `closedir(dir);` this at the end of `wxArrayString serial_port_list()` function.
+   b. add `list.Add("/dev/ttyCAL1");` before line 204
+   c. recompile the program by issuing make command.
+   d. if you have problems building MotionCal program, see: https://forum.pjrc.com/threads/57378-Cannot-make-MotionCal-for-Linux
+
+9. You should see red dots arranged as a sphere like in:
+
+![alt text](https://raw.githubusercontent.com/altineller/documentation_images/master/fximu/calibration_screen.png)
+
+Rotate the sensor in all directions until gaps are less than 1% and variance less than 2%. At this state you can get a screenshot of calibration screen, and put those values in the hard and soft iron correction matrices defined in fximu_params.yaml file.
+
+
