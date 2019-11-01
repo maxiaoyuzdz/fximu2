@@ -15,6 +15,12 @@ Note that roscore must be runnning
 
 ```rosrun tf static_transform_publisher 0.0 0.0 0.0 0.0 0.0 0.0 map base_imu_link 100```
 
+#### launching test system with a launch file
+
+```roslaunch fximu2 fximu2.launch```
+
+This is a launch file that will launch rosserial, and run the static transform publisher as shown above.
+
 #### run rviz
 
 ```rviz```
