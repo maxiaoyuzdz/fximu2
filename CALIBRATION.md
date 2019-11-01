@@ -21,8 +21,6 @@ The complementary filter is not initialized, and the hard iron and soft iron cor
 7. verify that the calibration system is running: `screen /dev/ttyCAL 115200` you should see values running as:
 
 > Raw:-73,2054,120,22,-17,51,232,631,277
-> Raw:-68,2045,102,51,-56,24,234,617,265
-> Raw:-67,2055,122,90,-14,52,245,640,256
 
 To quit screen press `ctrl-A` and `\` keys.
 
