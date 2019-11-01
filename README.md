@@ -49,4 +49,8 @@ The frame_id's for the respective Imu and MagneticField messages can be setup wi
 
 `gfsr` and `afsr` are gyro and accel sensitivities at system init. the defaults are 500DPS for gyro, and 4G for accel.
 
-`calibration_mode` sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. See CALIBRATION.md for details.
+`calibration_mode` sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. 
+
+See [CALIBRATION.md](https://github.com/altineller/fximu2/blob/master/CALIBRATION.md) for details.
+
+See [HOWTO.md](https://github.com/altineller/fximu2/blob/master/HOWTO.md) on notes for operations.
