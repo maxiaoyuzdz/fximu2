@@ -24,7 +24,7 @@ The complementary filter is not initialized, and the hard iron and soft iron cor
 
 To quit screen press `ctrl-A` and `\` keys.
 
-8. Download and compile https://github.com/PaulStoffregen/MotionCal it will require a small modification to see our virtual  `/dev/ttyCAL1` port.
+8. Download and compile https://github.com/PaulStoffregen/MotionCal . it will require a small modification to see our virtual  `/dev/ttyCAL1` port.
 
    - edit portlist.cpp, near line 204 where `closedir(dir);` this at the end of `wxArrayString serial_port_list()` function.
    - add `list.Add("/dev/ttyCAL1");` before line 204
