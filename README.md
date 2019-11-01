@@ -33,18 +33,17 @@ calibration_mode: false
 
 The mag_offset and mag_soft_iron parameters should be filled with data from your calibration software. Sensor board will auto correct for hard and soft iron errors.
 
-sensor_read_rate can be 50,100,200, or 400
-output_rate_divider can be 1,2,4,8,16
+`sensor_read_rate` can be 50,100,200, or 400
+`output_rate_divider` can be 1,2,4,8,16
 
 The output rate will equal sensor_read_rate / output_rate_divider.
 
-kAngularVelocityThreshold, kAccelerationThreshold and kDeltaAngularVelocityThreshold are thresholds for steady state detection.
-while the unit is within these thresholds, it will calculate the gyro biases and accel gain.
+`kAngularVelocityThreshold`, `kAccelerationThreshold` and `kDeltaAngularVelocityThreshold` are thresholds for steady state detection. while the unit is within these thresholds, it will calculate the gyro biases and accel gain.
 
-Adaptive gain and bias optimization options can be turned off by setting false in the parameters.
+`adaptive_gain` and `bias_estimation` options can be turned off by setting false in the parameters.
 
-The frame_id's for the respective Imu and MagneticField messages can be setup with the imu_frame_id and mag_frame_id parameters.
+The frame_id's for the respective Imu and MagneticField messages can be setup with the `imu_frame_id` and `mag_frame_id` parameters.
 
-gfsr and afsr are gyro and accel sensitivities at system init. the defaults are 500DPS for gyro, and 4G for accel.
+`gfsr` and `afsr` are gyro and accel sensitivities at system init. the defaults are 500DPS for gyro, and 4G for accel.
 
 calibration_mode sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. See CALIBRATION.md for details.
