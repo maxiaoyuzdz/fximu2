@@ -26,10 +26,10 @@ To quit screen press `ctrl-A` and `\` keys.
 
 8. Download and compile https://github.com/PaulStoffregen/MotionCal it will require a small modification to see our virtual  `/dev/ttyCAL1` port.
 
-   a. edit portlist.cpp, near line 204 where `closedir(dir);` this at the end of `wxArrayString serial_port_list()` function.
-   b. add `list.Add("/dev/ttyCAL1");` before line 204
-   c. recompile the program by issuing make command.
-   d. if you have problems building MotionCal program, see: https://forum.pjrc.com/threads/57378-Cannot-make-MotionCal-for-Linux
+   ⋅⋅* edit portlist.cpp, near line 204 where `closedir(dir);` this at the end of `wxArrayString serial_port_list()` function.
+   ⋅⋅* add `list.Add("/dev/ttyCAL1");` before line 204
+   ⋅⋅* recompile the program by issuing make command.
+   ⋅⋅* if you have problems building MotionCal program, see: https://forum.pjrc.com/threads/57378-Cannot-make-MotionCal-for-Linux
 
 9. You should see red dots arranged as a sphere like in:
 
