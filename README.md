@@ -54,3 +54,15 @@ The frame_id's for the respective Imu and MagneticField messages can be setup wi
 See [CALIBRATION.md](https://github.com/altineller/fximu2/blob/master/CALIBRATION.md) for details.
 
 See [HOWTO.md](https://github.com/altineller/fximu2/blob/master/HOWTO.md) on notes for operations.
+
+
+### Credits
+
+_Roberto G. Valenti_ for writing the complementary filter.
+
+_Vitor Matos_ for writing the rosserial tivac library.
+
+_Charles Tsai_ and user _cb1_mobile_ from e2e.ti.com forums, for help on debugging the problems on sensor chipset.
+
+_Melih Karakelle_ for advice on the development of the circuit.
+
