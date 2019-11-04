@@ -24,7 +24,7 @@ The complementary filter is not initialized, and the hard iron and soft iron cor
 
 To quit screen press `ctrl-A` and `\` keys.
 
-### Please note:
+##### Please note:
 If you are making the calibration on robot, Steps 1, 2, 3 should be done in the robot, while the 4,5,6... should pe performed on the laptop.
 
 8. Download and compile https://github.com/PaulStoffregen/MotionCal . it will require a small modification to see our virtual  `/dev/ttyCAL1` port.
