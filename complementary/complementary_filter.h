@@ -61,6 +61,8 @@ class ComplementaryFilter {
     // dt: time delta, in seconds.
     void update(float ax, float ay, float az, float wx, float wy, float wz, float mx, float my, float mz, double dt);
 
+    void resetFilter();
+
 
   private:
     static const float kGravity;

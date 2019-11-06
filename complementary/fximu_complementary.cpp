@@ -7,6 +7,8 @@
 #include "fximu_complementary.h"
 #include "parameters.h"
 
+//#define DEBUG
+
 // TODO: research LPF and HPF on both gyro and accel
 
 int main(void) {
@@ -96,6 +98,8 @@ int main(void) {
             TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClkFreq / p_sensor_read_rate);
 
             if(!p_calibration_mode) {
+
+                filter_.resetFilter();
 
                 filter_.setDoBiasEstimation(p_bias_estimation);
                 filter_.setDoAdaptiveGain(p_adaptive_gain);
@@ -242,11 +246,12 @@ int main(void) {
                     pub_imu_msg.publish(&imu_msg);
                     pub_mag_msg.publish(&mag_msg);
 
-                    // TODO: do this in some sort of debug
-                    if(pub_sequence % 64 == 0) {
-                        sprintf(loginfo_buffer, "biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
-                        nh.loginfo(loginfo_buffer);
-                    }
+                    #ifdef DEBUG
+                        if(pub_sequence % 128 == 0) {
+                            sprintf(loginfo_buffer, "biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
+                            nh.loginfo(loginfo_buffer);
+                        }
+                    #endif
 
                 } else {
 

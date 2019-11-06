@@ -192,7 +192,7 @@ void ComplementaryFilter::updateBiases(float ax, float ay, float az,  float wx, 
 
   steady_state_momentary_ = checkState(ax, ay, az, wx, wy, wz);
 
-  if(steady_state_momentary_) { if(steady_state_count_ < steady_limit_) { steady_state_count_++; } } else { steady_state_count_ = 0; }
+  if(steady_state_momentary_) { if(steady_state_count_ <= steady_limit_) { steady_state_count_++; } } else { steady_state_count_ = 0; }
   if(steady_state_count_ > steady_limit_) { steady_state_ = true; } else { steady_state_ = false; }
 
   if (steady_state_) {
@@ -358,6 +358,18 @@ float ComplementaryFilter::getAdaptiveGain(float alpha, float ax, float ay, floa
         factor = 0.0;
     }
     return factor*alpha;
+}
+
+void ComplementaryFilter::resetFilter() {
+
+    initialized_ = false;
+    steady_state_ = false;
+    steady_state_momentary_ = false;
+    steady_state_count_ = 0;
+
+    wx_prev_ = 0.0F, wy_prev_= 0.0F, wz_prev_= 0.0F;
+    wx_bias_ = 0.0F, wy_bias_ = 0.0F, wz_bias_ = 0.0F;
+
 }
 
 void normalizeVector(float& x, float& y, float& z) {
