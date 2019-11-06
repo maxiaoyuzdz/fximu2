@@ -10,5 +10,5 @@ kAngularVelocityThreshold: 0.053, kAccelerationThreshold: 0.19, kDeltaAngularVel
 imu_frame_id: "base_imu_link", mag_frame_id: "mag_imu_link",
 gfsr: 2, afsr: 1,
 calibration_mode: 0,
-steady_limit: 64
+steady_limit: 32
 }
