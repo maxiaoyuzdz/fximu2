@@ -14,11 +14,11 @@ class MeasureThresholds():
         rospy.loginfo("listening on /imu/data")
 
 	global kAccelerationThreshold
-        kAccelerationThreshold = 0.15
+        kAccelerationThreshold = 0.19
 	global kAngularVelocityThreshold
-	kAngularVelocityThreshold = 0.02
+	kAngularVelocityThreshold = 0.055
 	global kDeltaAngularVelocityThreshold
-	kDeltaAngularVelocityThreshold = 0.015
+	kDeltaAngularVelocityThreshold = 0.033
 
 	global wx
 	global wy
