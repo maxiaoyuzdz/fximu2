@@ -117,6 +117,9 @@ void handle_parameters(ros::NodeHandle &nh) {
     sprintf(loginfo_buffer, "calibration mode: %s", p_calibration_mode ? "true" : "false");
     nh.loginfo(loginfo_buffer);
 
+    nh.spinOnce();
+    nh.getHardware()->delay(10);
+
     parameters[27] = nh.getParam("/params/imu/steady_limit", (int*) &p_steady_limit, 1, 1000);
 
     nh.spinOnce();

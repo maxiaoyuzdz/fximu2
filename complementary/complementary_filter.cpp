@@ -195,7 +195,7 @@ void ComplementaryFilter::updateBiases(float ax, float ay, float az,  float wx, 
   if(steady_state_momentary_) { if(steady_state_count_ <= steady_limit_) { steady_state_count_++; } } else { steady_state_count_ = 0; }
   if(steady_state_count_ > steady_limit_) { steady_state_ = true; } else { steady_state_ = false; }
 
-  if (steady_state_) {
+  if(steady_state_) {
     wx_bias_ += bias_alpha_ * (wx - wx_bias_);
     wy_bias_ += bias_alpha_ * (wy - wy_bias_);
     wz_bias_ += bias_alpha_ * (wz - wz_bias_);
@@ -340,8 +340,6 @@ void ComplementaryFilter::getOrientation(float& q0, float& q1, float& q2, float&
   invertQuaternion(q0_, q1_, q2_, q3_, q0, q1, q2, q3);
 }
 
-
-
 float ComplementaryFilter::getAdaptiveGain(float alpha, float ax, float ay, float az) {
     float a_mag = sqrt(ax*ax + ay*ay + az*az);
     float error = fabs(a_mag - kGravity)/kGravity;
@@ -358,18 +356,6 @@ float ComplementaryFilter::getAdaptiveGain(float alpha, float ax, float ay, floa
         factor = 0.0;
     }
     return factor*alpha;
-}
-
-void ComplementaryFilter::resetFilter() {
-
-    initialized_ = false;
-    steady_state_ = false;
-    steady_state_momentary_ = false;
-    steady_state_count_ = 0;
-
-    wx_prev_ = 0.0F, wy_prev_= 0.0F, wz_prev_= 0.0F;
-    wx_bias_ = 0.0F, wy_bias_ = 0.0F, wz_bias_ = 0.0F;
-
 }
 
 void normalizeVector(float& x, float& y, float& z) {

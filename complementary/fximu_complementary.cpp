@@ -7,7 +7,7 @@
 #include "fximu_complementary.h"
 #include "parameters.h"
 
-//#define DEBUG
+#define DEBUG
 
 // TODO: research LPF and HPF on both gyro and accel
 
@@ -94,12 +94,14 @@ int main(void) {
             // handle parameters
             handle_parameters(nh);
 
+            // reset sequences
+            read_sequence = 0;
+            pub_sequence = 0;
+
             // re-set timer, with p_sensor_read_rate from handle_parameters
             TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClkFreq / p_sensor_read_rate);
 
             if(!p_calibration_mode) {
-
-                filter_.resetFilter();
 
                 filter_.setDoBiasEstimation(p_bias_estimation);
                 filter_.setDoAdaptiveGain(p_adaptive_gain);
@@ -247,11 +249,13 @@ int main(void) {
                     pub_mag_msg.publish(&mag_msg);
 
                     #ifdef DEBUG
-                        if(pub_sequence % 128 == 0) {
-                            sprintf(loginfo_buffer, "biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
+                        if(pub_sequence % 1024 == 0) {
+                            sprintf(loginfo_buffer, "gyro biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
                             nh.loginfo(loginfo_buffer);
                         }
                     #endif
+
+                    pub_sequence++;
 
                 } else {
 
@@ -262,7 +266,6 @@ int main(void) {
                 }
 
                 nh.spinOnce();
-                pub_sequence++;
 
             }
 

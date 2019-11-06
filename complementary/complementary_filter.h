@@ -48,21 +48,12 @@ class ComplementaryFilter {
     // Get the orientation, as a Hamilton Quaternion, of the body frame wrt the fixed frame.
     void getOrientation(float& q0, float& q1, float& q2, float& q3) const;
 
-    // Update from accelerometer and gyroscope data.
-    // [ax, ay, az]: Normalized gravity vector.
-    // [wx, wy, wz]: Angular veloctiy, in rad / s.
-    // dt: time delta, in seconds.
-    void update(float ax, float ay, float az, float wx, float wy, float wz, double dt);
-
     // Update from accelerometer, gyroscope, and magnetometer data.
     // [ax, ay, az]: Normalized gravity vector.
     // [wx, wy, wz]: Angular veloctiy, in rad / s.
     // [mx, my, mz]: Magnetic field, units irrelevant.
     // dt: time delta, in seconds.
     void update(float ax, float ay, float az, float wx, float wy, float wz, float mx, float my, float mz, double dt);
-
-    void resetFilter();
-
 
   private:
     static const float kGravity;
