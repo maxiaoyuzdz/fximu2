@@ -1,3 +1,5 @@
+## Updating repository manually the last time, so some files will be deleted, but will be put back in 10 minutes
+
 # fximu2, ROS Software for FXIMU sensor board
 
 fximu version 2. Utilizes a port of ros's complementary filter on the TM4C123 MCU to generate superior performance.
