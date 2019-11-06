@@ -155,6 +155,7 @@ int main(void) {
 
         if(!nh_connected && nh_prev_state) {
             nh_prev_state = false;
+            MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 0x0);
             nh.spinOnce();
             nh.getHardware()->delay(10);
             continue;
