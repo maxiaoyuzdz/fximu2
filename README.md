@@ -20,13 +20,14 @@ mag_offset_x: 51.00, mag_offset_y: 98.60, mag_offset_z: 31.11,
 mag_soft_iron_ix: 0.990, mag_soft_iron_iy: -0.025, mag_soft_iron_iz: -0.016, 
 mag_soft_iron_jx: -0.025, mag_soft_iron_jy: 0.996, mag_soft_iron_jz: 0.011, 
 mag_soft_iron_kx: -0.016, mag_soft_iron_ky: 0.011, mag_soft_iron_kz: 1.015, 
-sensor_read_rate: 400, output_rate_divider: 4,
-adaptive_gain: true, bias_estimation: true,
+sensor_read_rate: 400, output_rate_divider: 8,
+adaptive_gain: 1, bias_estimation: 1,
 gain_acc: 0.02, gain_mag: 0.01, bias_alpha: 0.25,
-kAngularVelocityThreshold: 0.2, kAccelerationThreshold: 0.4, kDeltaAngularVelocityThreshold: 0.05,
+kAngularVelocityThreshold: 0.053, kAccelerationThreshold: 0.19, kDeltaAngularVelocityThreshold: 0.033,
 imu_frame_id: "base_imu_link", mag_frame_id: "mag_imu_link",
 gfsr: 2, afsr: 1,
-calibration_mode: false
+calibration_mode: 0,
+steady_limit: 64
 }
 
 ```
@@ -40,7 +41,7 @@ The output rate will equal sensor_read_rate / output_rate_divider.
 
 `kAngularVelocityThreshold`, `kAccelerationThreshold` and `kDeltaAngularVelocityThreshold` are thresholds for steady state detection. while the unit is within these thresholds, it will calculate the gyro biases and accel gain.
 
-`adaptive_gain` and `bias_estimation` options can be turned off by setting false in the parameters.
+`adaptive_gain` and `bias_estimation` options can be turned off by setting 0 in the parameters. Notice that in kinetic, true and false are 0 or 1, while in melodic, you can define actual true or false in the yaml file.
 
 `gain_acc`, `gain_mag`, `bias_alpha` are the accel gain, mag gain and bias alpha for the complementary filter, as explained in: 
 [http://wiki.ros.org/imu_complementary_filter](http://wiki.ros.org/imu_complementary_filter)
@@ -50,6 +51,8 @@ The frame_id's for the respective Imu and MagneticField messages can be setup wi
 `gfsr` and `afsr` are gyro and accel sensitivities at system init. the defaults are 500DPS for gyro, and 4G for accel.
 
 `calibration_mode` sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. 
+
+`steady_limit` sets after how many checkStates (returning true), the sensor will be in steady state. This was required to better the adaptive bias feature. Valid values are 2 to 127.
 
 See [CALIBRATION.md](https://github.com/altineller/fximu2/blob/master/CALIBRATION.md) for details.
 

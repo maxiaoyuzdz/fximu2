@@ -192,7 +192,7 @@ void ComplementaryFilter::updateBiases(float ax, float ay, float az,  float wx, 
 
   steady_state_momentary_ = checkState(ax, ay, az, wx, wy, wz);
 
-  if(steady_state_momentary_) { if(steady_state_count_ < steady_limit_) { steady_state_count_++; }} else { steady_state_count_ = 0; }
+  if(steady_state_momentary_) { if(steady_state_count_ < steady_limit_) { steady_state_count_++; } } else { steady_state_count_ = 0; }
   if(steady_state_count_ > steady_limit_) { steady_state_ = true; } else { steady_state_ = false; }
 
   if (steady_state_) {
@@ -208,7 +208,7 @@ void ComplementaryFilter::updateBiases(float ax, float ay, float az,  float wx, 
 }
 
 bool ComplementaryFilter::setSteadyLimit(uint8_t limit)  {
-    if(limit >= 0 && limit <= 127) {
+    if(limit >= 2 && limit <= 127) {
         steady_limit_ = limit;
         return true;
     } else {
