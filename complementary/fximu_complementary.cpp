@@ -239,11 +239,58 @@ int main(void) {
                     // get orientiation from filter
                     filter_.getOrientation(q0, q1, q2, q3);
 
-                    // hamilton to ROS quaternion
-                    imu_msg.orientation.x = q1;
-                    imu_msg.orientation.y = q2;
-                    imu_msg.orientation.z = q3;
-                    imu_msg.orientation.w = q0;
+                    switch(p_world_frame) {
+                        case 0:
+                            imu_msg.orientation.x = q1;
+                            imu_msg.orientation.y = q2;
+                            imu_msg.orientation.z = q3;
+                            imu_msg.orientation.w = q0;
+                            break;
+                        case 1:
+                            float q0_temp, q1_temp, q2_temp, q3_temp;
+                            quaternionMultiplication(0.707106f, 0.0f, 0.0f, 0.707106f, q0, q1, q2, q3, q0_temp, q1_temp, q2_temp, q3_temp);
+                            imu_msg.orientation.x = q1_temp;
+                            imu_msg.orientation.y = q2_temp;
+                            imu_msg.orientation.z = q3_temp;
+                            imu_msg.orientation.w = q0_temp;
+                            break;
+                        default:
+                            imu_msg.orientation.x = q1;
+                            imu_msg.orientation.y = q2;
+                            imu_msg.orientation.z = q3;
+                            imu_msg.orientation.w = q0;
+                            break;
+                    }
+
+                    imu_msg.angular_velocity_covariance[0] = 0.02;
+                    imu_msg.angular_velocity_covariance[1] = 0;
+                    imu_msg.angular_velocity_covariance[2] = 0;
+                    imu_msg.angular_velocity_covariance[3] = 0;
+                    imu_msg.angular_velocity_covariance[4] = 0.02;
+                    imu_msg.angular_velocity_covariance[5] = 0;
+                    imu_msg.angular_velocity_covariance[6] = 0;
+                    imu_msg.angular_velocity_covariance[7] = 0;
+                    imu_msg.angular_velocity_covariance[8] = 0.02;
+
+                    imu_msg.linear_acceleration_covariance[0] = 0.04;
+                    imu_msg.linear_acceleration_covariance[1] = 0;
+                    imu_msg.linear_acceleration_covariance[2] = 0;
+                    imu_msg.linear_acceleration_covariance[3] = 0;
+                    imu_msg.linear_acceleration_covariance[4] = 0.04;
+                    imu_msg.linear_acceleration_covariance[5] = 0;
+                    imu_msg.linear_acceleration_covariance[6] = 0;
+                    imu_msg.linear_acceleration_covariance[7] = 0;
+                    imu_msg.linear_acceleration_covariance[8] = 0.04;
+
+                    imu_msg.orientation_covariance[0] = 0.0025;
+                    imu_msg.orientation_covariance[1] = 0;
+                    imu_msg.orientation_covariance[2] = 0;
+                    imu_msg.orientation_covariance[3] = 0;
+                    imu_msg.orientation_covariance[4] = 0.0025;
+                    imu_msg.orientation_covariance[5] = 0;
+                    imu_msg.orientation_covariance[6] = 0;
+                    imu_msg.orientation_covariance[7] = 0;
+                    imu_msg.orientation_covariance[8] = 0.0025;
 
                     // publish objects
                     pub_imu_msg.publish(&imu_msg);

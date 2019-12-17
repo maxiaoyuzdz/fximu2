@@ -77,11 +77,18 @@ void Timer0IntHandler(void) {
     ROM_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 }
 
+// TODO: fix this later
+void led_delay() {
+    // 50ms
+    MAP_SysCtlDelay(1333333UL);
+}
+
 void hard_reset() {
     // gyro hard reset
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0x00);
     // accelmag hard reset
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, GPIO_PIN_3);
+    // TODO: change those to use constant or have custom delay function like in rpilot
     MAP_SysCtlDelay(10000);
     // gyro operational
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, GPIO_PIN_2);
@@ -210,6 +217,5 @@ void init_sensors() {
     }
 
 }
-
 
 #endif

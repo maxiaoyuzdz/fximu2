@@ -3,9 +3,9 @@ project(complementary)
 
 include_directories(${ROS_LIB_DIR})
 
-add_definitions(-DTX_BUFFER_SIZE=1024)
-add_definitions(-DRX_BUFFER_SIZE=1024)
-add_definitions(-DUART_BUFFER_SIZE=1024)
+add_definitions(-DTX_BUFFER_SIZE=512)
+add_definitions(-DRX_BUFFER_SIZE=512)
+add_definitions(-DUART_BUFFER_SIZE=512)
 add_definitions(-DROSSERIAL_BAUDRATE=230400)
 
 generate_tivac_firmware(

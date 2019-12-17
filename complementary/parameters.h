@@ -1,7 +1,7 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
-#define PARAM_SIZE 28
+#define PARAM_SIZE 29
 
 // for debug
 #include <stdio.h>
@@ -40,6 +40,8 @@ char *mag_link_ptr[1] = {mag_link};
 
 int p_gfsr = 2; // GFSR_500PS
 int p_afsr = 1; // AFSR_4G
+
+int p_world_frame = 0;
 
 void handle_parameters(ros::NodeHandle &nh) {
 
@@ -121,6 +123,13 @@ void handle_parameters(ros::NodeHandle &nh) {
     nh.getHardware()->delay(10);
 
     parameters[27] = nh.getParam("/params/imu/steady_limit", (int*) &p_steady_limit, 1, 1000);
+
+    nh.spinOnce();
+    nh.getHardware()->delay(10);
+
+    parameters[28] = nh.getParam("/params/imu/world_frame", (int*) &p_world_frame, 1, 1000);
+    sprintf(loginfo_buffer, "world_frame: %d", p_world_frame);
+    nh.loginfo(loginfo_buffer);
 
     nh.spinOnce();
     nh.getHardware()->delay(10);

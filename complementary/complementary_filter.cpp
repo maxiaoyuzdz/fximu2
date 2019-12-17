@@ -18,8 +18,6 @@ ComplementaryFilter::ComplementaryFilter():
     do_bias_estimation_(true),
     do_adaptive_gain_(true),
     initialized_(false),
-    steady_state_(false),
-    steady_state_momentary_(false),
     steady_limit_(8),
     q0_(1), q1_(0), q2_(0), q3_(0),
     wx_prev_(0), wy_prev_(0), wz_prev_(0),
@@ -68,7 +66,7 @@ float ComplementaryFilter::getGainMag() const {
 }
 
 bool ComplementaryFilter::getSteadyState() const {
-  return steady_state_;
+  return steady_state;
 }
 
 bool ComplementaryFilter::setBiasAlpha(float bias_alpha) {
@@ -129,8 +127,47 @@ float ComplementaryFilter::getAngularVelocityBiasZ() const {
   return wz_bias_;
 }
 
+void ComplementaryFilter::_update(float ax, float ay, float az, float wx, float wy, float wz, double dt) {
+
+  if(!initialized_) {
+    // First time - ignore prediction:
+    getMeasurement(ax, ay, az, q0_, q1_, q2_, q3_);
+    initialized_ = true;
+    return;
+  }
+
+  // Bias estimation.
+  if(do_bias_estimation_) {
+    updateBiases(ax, ay, az, wx, wy, wz);
+  }
+
+  // Prediction.
+  float q0_pred, q1_pred, q2_pred, q3_pred;
+  getPrediction(wx, wy, wz, dt, q0_pred, q1_pred, q2_pred, q3_pred);
+
+  // Correction (from acc):
+  // q_ = q_pred * [(1-gain) * qI + gain * dq_acc]
+  // where qI = identity quaternion
+  float dq0_acc, dq1_acc, dq2_acc, dq3_acc;
+  getAccCorrection(ax, ay, az, q0_pred, q1_pred, q2_pred, q3_pred, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
+
+  float gain;
+  if(do_adaptive_gain_) {
+    gain = getAdaptiveGain(gain_acc_, ax, ay, az);
+  } else {
+    gain = gain_acc_;
+  }
+
+  scaleQuaternion(gain, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
+  quaternionMultiplication(q0_pred, q1_pred, q2_pred, q3_pred, dq0_acc, dq1_acc, dq2_acc, dq3_acc, q0_, q1_, q2_, q3_);
+  normalizeQuaternion(q0_, q1_, q2_, q3_);
+
+}
+
+
 void ComplementaryFilter::update(float ax, float ay, float az, float wx, float wy, float wz, float mx, float my, float mz, double dt) {
-  if (!initialized_) {
+
+  if(!initialized_) {
     // First time - ignore prediction:
     getMeasurement(ax, ay, az, mx, my, mz, q0_, q1_, q2_, q3_);
     initialized_ = true;
@@ -190,12 +227,12 @@ bool ComplementaryFilter::checkState(float ax, float ay, float az, float wx, flo
 
 void ComplementaryFilter::updateBiases(float ax, float ay, float az,  float wx, float wy, float wz) {
 
-  steady_state_momentary_ = checkState(ax, ay, az, wx, wy, wz);
+  steady_state_momentary = checkState(ax, ay, az, wx, wy, wz);
 
-  if(steady_state_momentary_) { if(steady_state_count_ <= steady_limit_) { steady_state_count_++; } } else { steady_state_count_ = 0; }
-  if(steady_state_count_ > steady_limit_) { steady_state_ = true; } else { steady_state_ = false; }
+  if(steady_state_momentary) { if(steady_state_count <= steady_limit_) { steady_state_count++; } } else { steady_state_count = 0; }
+  if(steady_state_count > steady_limit_) { steady_state = true; } else { steady_state = false; }
 
-  if(steady_state_) {
+  if(steady_state) {
     wx_bias_ += bias_alpha_ * (wx - wx_bias_);
     wy_bias_ += bias_alpha_ * (wy - wy_bias_);
     wz_bias_ += bias_alpha_ * (wz - wz_bias_);
@@ -207,7 +244,7 @@ void ComplementaryFilter::updateBiases(float ax, float ay, float az,  float wx, 
 
 }
 
-bool ComplementaryFilter::setSteadyLimit(uint8_t limit)  {
+bool ComplementaryFilter::setSteadyLimit(int limit)  {
     if(limit >= 2 && limit <= 127) {
         steady_limit_ = limit;
         return true;

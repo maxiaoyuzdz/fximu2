@@ -36,7 +36,7 @@ class ComplementaryFilter {
     bool setKAccelerationThreshold(float thres);
     bool setKDeltaAngularVelocityThreshold(float thres);
 
-    bool setSteadyLimit(uint8_t limit);
+    bool setSteadyLimit(int limit);
 
     float getAngularVelocityBiasX() const;
     float getAngularVelocityBiasY() const;
@@ -54,6 +54,8 @@ class ComplementaryFilter {
     // [mx, my, mz]: Magnetic field, units irrelevant.
     // dt: time delta, in seconds.
     void update(float ax, float ay, float az, float wx, float wy, float wz, float mx, float my, float mz, double dt);
+
+    void _update(float ax, float ay, float az, float wx, float wy, float wz, double dt);
 
   private:
     static const float kGravity;
@@ -77,10 +79,11 @@ class ComplementaryFilter {
     bool do_adaptive_gain_;
 
     bool initialized_;
-    bool steady_state_;
-    bool steady_state_momentary_;
-    uint8_t steady_state_count_;
-    uint8_t steady_limit_;
+    int steady_limit_;
+
+    bool steady_state = false;
+    bool steady_state_momentary = false;
+    int steady_state_count = 0;
 
     // The orientation as a Hamilton quaternion (q0 is the scalar). Represents
     // the orientation of the fixed frame wrt the body frame.
