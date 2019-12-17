@@ -27,7 +27,8 @@ kAngularVelocityThreshold: 0.053, kAccelerationThreshold: 0.19, kDeltaAngularVel
 imu_frame_id: "base_imu_link", mag_frame_id: "mag_imu_link",
 gfsr: 2, afsr: 1,
 calibration_mode: 0,
-steady_limit: 64
+steady_limit: 64,
+world_frame: 0
 }
 
 ```
@@ -53,6 +54,8 @@ The frame_id's for the respective Imu and MagneticField messages can be setup wi
 `calibration_mode` sets the device in calibration mode. it will send raw sensor values as a Int16MultiArray, so the cal_bridge.py script can forward these to a virtual serial port, thus allowing calibration by a 3rd party software without updating the firmware, or removing the sensor from your robot. 
 
 `steady_limit` sets after how many checkStates (returning true), the sensor will be in steady state. This was required to better the adaptive bias feature. Valid values are 2 to 127.
+
+`world_frame` 0 for NWU, 1 for ENU, notice that sensor data is not touched, but output orientation quaternion is rotated.
 
 See [CALIBRATION.md](https://github.com/altineller/fximu2/blob/master/CALIBRATION.md) for details.
 
