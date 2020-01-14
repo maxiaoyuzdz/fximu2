@@ -77,24 +77,28 @@ void Timer0IntHandler(void) {
     ROM_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 }
 
-// TODO: fix this later
-void led_delay() {
+void fx_delay() {
     // 50ms
     MAP_SysCtlDelay(1333333UL);
 }
 
 void hard_reset() {
+
     // gyro hard reset
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0x00);
+
     // accelmag hard reset
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, GPIO_PIN_3);
-    // TODO: change those to use constant or have custom delay function like in rpilot
-    MAP_SysCtlDelay(10000);
+
+    fx_delay();
+
     // gyro operational
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
     // accelmag operational
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0x00);
-    MAP_SysCtlDelay(10000);
+
+    fx_delay();
 }
 
 void init_system() {
@@ -110,12 +114,17 @@ void init_system() {
     HWREG(GPIO_PORTF_BASE+GPIO_O_CR) |= GPIO_PIN_0;
 
     // configure port f
-    MAP_GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_0 | GPIO_PIN_2 | GPIO_PIN_3);
+    MAP_GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
 
-    // blink status led
+    // blink led 0
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, GPIO_PIN_0);
-    MAP_SysCtlDelay(10000);
+    fx_delay();
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 0x0);
+
+    // blink led 1
+    MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, GPIO_PIN_1);
+    fx_delay();
+    MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 0x0);
 
 }
 
@@ -129,6 +138,18 @@ void init_I2C2(void) {
     GPIOPinTypeI2C(GPIO_PORTE_BASE, GPIO_PIN_5);
     I2CMasterInitExpClk(I2C2_BASE, SysCtlClockGet(), true);
     HWREG(I2C2_BASE + I2C_O_FIFOCTL) = 80008000;
+}
+
+void init_I2C0(void) {
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C0);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_I2C0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    GPIOPinConfigure(GPIO_PB2_I2C0SCL);
+    GPIOPinConfigure(GPIO_PB3_I2C0SDA);
+    GPIOPinTypeI2CSCL(GPIO_PORTB_BASE, GPIO_PIN_2);
+    GPIOPinTypeI2C(GPIO_PORTB_BASE, GPIO_PIN_3);
+    I2CMasterInitExpClk(I2C0_BASE, SysCtlClockGet(), true);
+    HWREG(I2C0_BASE + I2C_O_FIFOCTL) = 80008000;
 }
 
 void init_sensors() {

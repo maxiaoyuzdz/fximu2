@@ -72,3 +72,10 @@ _Charles Tsai_ and user _cb1_mobile_ from e2e.ti.com forums, for help on debuggi
 
 _Melih Karakelle_ for advice on the development of the circuit.
 
+### TODO
+
+- Auxillary magnetometer input
+
+- Use ACM0/1 instead of CAL0/1
+
+

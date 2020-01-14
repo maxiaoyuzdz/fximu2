@@ -17,7 +17,7 @@ class MeasureGravity():
     	counter = 0
 
 	global data
-	data = [0.0] * 4096
+	data = [0.0] * 128
 
     def sub_imu(self, msg):
 	x = msg.linear_acceleration.x
@@ -27,8 +27,8 @@ class MeasureGravity():
 	global counter
 	counter += 1
 	global data
-	data[counter%4096] = acc_magnitude
-	gravity = sum(data)/4096
+	data[counter%128] = acc_magnitude
+	gravity = sum(data)/128
 	print(gravity)
 if __name__ == '__main__':
     try:

@@ -41,11 +41,15 @@ typedef enum {
 #define GYRO_SENSITIVITY_1000DPS (0.03125F)
 #define GYRO_SENSITIVITY_2000DPS (0.0625F)
 
-#define ACCEL_MG_LSB_2G (0.000244F)
+//#define ACCEL_MG_LSB_2G (0.000244F)
 //#define ACCEL_MG_LSB_4G (0.000488F)
-// TODO: make configurable? and apply for others.
-#define ACCEL_MG_LSB_4G (0.000484681F)
+//#define ACCEL_MG_LSB_8G (0.000976F)
+
+#define ACCEL_MG_LSB_2G (0.000244F)
+#define ACCEL_MG_LSB_4G (0.000488F)
 #define ACCEL_MG_LSB_8G (0.000976F)
+
+#define ACCEL_MG_LSB_4G (0.000483168F)
 
 #define MAG_UT_LSB (0.1F)
 

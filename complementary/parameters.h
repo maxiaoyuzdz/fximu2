@@ -1,7 +1,7 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
-#define PARAM_SIZE 29
+#define PARAM_SIZE 30
 
 // for debug
 #include <stdio.h>
@@ -42,6 +42,8 @@ int p_gfsr = 2; // GFSR_500PS
 int p_afsr = 1; // AFSR_4G
 
 int p_world_frame = 0;
+
+int p_use_mag = 1;
 
 void handle_parameters(ros::NodeHandle &nh) {
 
@@ -129,6 +131,13 @@ void handle_parameters(ros::NodeHandle &nh) {
 
     parameters[28] = nh.getParam("/params/imu/world_frame", (int*) &p_world_frame, 1, 1000);
     sprintf(loginfo_buffer, "world_frame: %d", p_world_frame);
+    nh.loginfo(loginfo_buffer);
+
+    nh.spinOnce();
+    nh.getHardware()->delay(10);
+
+    parameters[29] = nh.getParam("/params/imu/use_mag", (int*) &p_use_mag, 1, 1000);
+    sprintf(loginfo_buffer, "use_mag: %d", p_use_mag);
     nh.loginfo(loginfo_buffer);
 
     nh.spinOnce();

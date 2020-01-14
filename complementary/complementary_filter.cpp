@@ -127,7 +127,7 @@ float ComplementaryFilter::getAngularVelocityBiasZ() const {
   return wz_bias_;
 }
 
-void ComplementaryFilter::_update(float ax, float ay, float az, float wx, float wy, float wz, double dt) {
+void ComplementaryFilter::update(float ax, float ay, float az, float wx, float wy, float wz, double dt) {
 
   if(!initialized_) {
     // First time - ignore prediction:
@@ -163,7 +163,6 @@ void ComplementaryFilter::_update(float ax, float ay, float az, float wx, float 
   normalizeQuaternion(q0_, q1_, q2_, q3_);
 
 }
-
 
 void ComplementaryFilter::update(float ax, float ay, float az, float wx, float wy, float wz, float mx, float my, float mz, double dt) {
 
@@ -208,6 +207,7 @@ void ComplementaryFilter::update(float ax, float ay, float az, float wx, float w
   quaternionMultiplication(q0_temp, q1_temp, q2_temp, q3_temp, dq0_mag, dq1_mag, dq2_mag, dq3_mag, q0_, q1_, q2_, q3_);
 
   normalizeQuaternion(q0_, q1_, q2_, q3_);
+
 }
 
 

@@ -7,8 +7,6 @@
 #include "fximu_complementary.h"
 #include "parameters.h"
 
-#define DEBUG
-
 // TODO: research LPF and HPF on both gyro and accel
 
 int main(void) {
@@ -27,7 +25,7 @@ int main(void) {
     // accelmag interrupt init
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
     GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, GPIO_PIN_2);
-    GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
     GPIOIntDisable(GPIO_PORTE_BASE, GPIO_PIN_2);
     GPIOIntClear(GPIO_PORTE_BASE, GPIO_PIN_2);
     GPIOIntRegister(GPIO_PORTE_BASE, accelmag_isr);
@@ -37,7 +35,7 @@ int main(void) {
     // gyro interrupt pin setup
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
     GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, GPIO_PIN_4);
-    GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
     GPIOIntDisable(GPIO_PORTC_BASE, GPIO_PIN_4);
     GPIOIntClear(GPIO_PORTC_BASE, GPIO_PIN_4);
     GPIOIntRegister(GPIO_PORTC_BASE, gyro_isr);
@@ -202,7 +200,11 @@ int main(void) {
                 mz = x * mag_softiron_matrix[2][0] + y * mag_softiron_matrix[2][1] + z * mag_softiron_matrix[2][2];
 
                 // update the filter
-                filter_.update(ax, ay, az, gx, gy, gz, mx, my, mz, dt);
+                if(p_use_mag==0) {
+                    filter_.update(ax, ay, az, gx, gy, gz, dt);
+                } else {
+                    filter_.update(ax, ay, az, gx, gy, gz, mx, my, mz, dt);
+                }
 
             }
 
@@ -296,21 +298,19 @@ int main(void) {
                     pub_imu_msg.publish(&imu_msg);
                     pub_mag_msg.publish(&mag_msg);
 
-                    #ifdef DEBUG
-                        if(pub_sequence % 1024 == 0) {
-                            sprintf(loginfo_buffer, "gyro biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
-                            nh.loginfo(loginfo_buffer);
-                        }
-                    #endif
+                    if(pub_sequence % 1024 == 0) {
+                        sprintf(loginfo_buffer, "gyro biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
+                        nh.loginfo(loginfo_buffer);
+                    }
 
                     pub_sequence++;
 
                 } else {
-
                     // publish array containing raw sensor values
                     int16_t sensor_data[9] = {accelRD.x, accelRD.y, accelRD.z, gyroRD.x, gyroRD.y, gyroRD.z, magRD.x, magRD.y, magRD.z};
                     array.data = sensor_data;
                     pub_array.publish(&array);
+
                 }
 
                 nh.spinOnce();
