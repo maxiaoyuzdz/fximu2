@@ -27,11 +27,12 @@ To quit screen press `ctrl-A` and `\` keys.
 ##### Please note:
 If you are making the calibration on robot, Steps 1, 2, 3 should be done in the robot, while the 4,5,6... should pe performed on the laptop.
 
-8. Download and compile https://github.com/PaulStoffregen/MotionCal . it will require a small modification to see our virtual  `/dev/ttyCAL1` port.
+8. Download and compile https://github.com/altineller/MotionCal
 
-   - edit portlist.cpp, near line 204 where `closedir(dir);` this at the end of `wxArrayString serial_port_list()` function.
-   - add `list.Add("/dev/ttyCAL1");` before line 204
-   - recompile the program by issuing make command.
+   - this is a slightly modified version of the https://github.com/PaulStoffregen/MotionCal 
+   - the portslist.cpp file has been modified so it can see our pseutp terminal `/dev/ttyCAL1` port.
+   - the prerequisites for compiling the program under ubuntu 18 are given at https://github.com/altineller/MotionCal/blob/master/README.md
+   - compile the program by issuing `make`
    - if you have problems building MotionCal program, see: https://forum.pjrc.com/threads/57378-Cannot-make-MotionCal-for-Linux
 
 9. You should see red dots arranged as a sphere like in:

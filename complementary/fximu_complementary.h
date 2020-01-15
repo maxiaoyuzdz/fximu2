@@ -121,10 +121,12 @@ void init_system() {
     fx_delay();
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 0x0);
 
+    #if HW_VERSION_CODE == FXIMU2C
     // blink led 1
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, GPIO_PIN_1);
     fx_delay();
     MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 0x0);
+    #endif
 
 }
 

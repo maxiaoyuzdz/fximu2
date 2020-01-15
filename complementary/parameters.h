@@ -1,6 +1,9 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+//#define HW_VERSION_CODE FXIMU2B
+#define HW_VERSION_CODE FXIMU2C
+
 #define PARAM_SIZE 30
 
 // for debug

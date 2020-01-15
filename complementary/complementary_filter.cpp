@@ -65,6 +65,10 @@ float ComplementaryFilter::getGainMag() const {
   return gain_mag_;
 }
 
+float ComplementaryFilter::getGain() {
+  return gain_;
+}
+
 bool ComplementaryFilter::getSteadyState() const {
   return steady_state;
 }
@@ -151,14 +155,13 @@ void ComplementaryFilter::update(float ax, float ay, float az, float wx, float w
   float dq0_acc, dq1_acc, dq2_acc, dq3_acc;
   getAccCorrection(ax, ay, az, q0_pred, q1_pred, q2_pred, q3_pred, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
 
-  float gain;
   if(do_adaptive_gain_) {
-    gain = getAdaptiveGain(gain_acc_, ax, ay, az);
+    gain_ = getAdaptiveGain(gain_acc_, ax, ay, az);
   } else {
-    gain = gain_acc_;
+    gain_ = gain_acc_;
   }
 
-  scaleQuaternion(gain, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
+  scaleQuaternion(gain_, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
   quaternionMultiplication(q0_pred, q1_pred, q2_pred, q3_pred, dq0_acc, dq1_acc, dq2_acc, dq3_acc, q0_, q1_, q2_, q3_);
   normalizeQuaternion(q0_, q1_, q2_, q3_);
 
@@ -187,11 +190,14 @@ void ComplementaryFilter::update(float ax, float ay, float az, float wx, float w
   // where qI = identity quaternion
   float dq0_acc, dq1_acc, dq2_acc, dq3_acc;  
   getAccCorrection(ax, ay, az, q0_pred, q1_pred, q2_pred, q3_pred, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
-  float alpha = gain_acc_;  
+
   if(do_adaptive_gain_) {
-     alpha = getAdaptiveGain(gain_acc_, ax, ay, az);
+    gain_ = getAdaptiveGain(gain_acc_, ax, ay, az);
+  } else {
+    gain_ = gain_acc_;
   }
-  scaleQuaternion(alpha, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
+
+  scaleQuaternion(gain_, dq0_acc, dq1_acc, dq2_acc, dq3_acc);
 
   float q0_temp, q1_temp, q2_temp, q3_temp;
   quaternionMultiplication(q0_pred, q1_pred, q2_pred, q3_pred, dq0_acc, dq1_acc, dq2_acc, dq3_acc, q0_temp, q1_temp, q2_temp, q3_temp);

@@ -19,6 +19,7 @@ class ComplementaryFilter {
     bool setGainMag(float gain);
     float getGainAcc() const;
     float getGainMag() const;
+    float getGain();
 
     bool setBiasAlpha(float bias_alpha);
     float getBiasAlpha() const;
@@ -70,6 +71,8 @@ class ComplementaryFilter {
     // Gain parameter for the complementary filter, belongs in [0, 1].
     float gain_acc_;
     float gain_mag_;
+
+    float gain_;
 
     // Bias estimation gain parameter, belongs in [0, 1].
     float bias_alpha_;

@@ -16,21 +16,21 @@ Everything is configurable using a fximu_params.yaml file tru rosparam.
 
 ```
 params/imu: { 
-mag_offset_x: 51.00, mag_offset_y: 98.60, mag_offset_z: 31.11, 
-mag_soft_iron_ix: 0.990, mag_soft_iron_iy: -0.025, mag_soft_iron_iz: -0.016, 
-mag_soft_iron_jx: -0.025, mag_soft_iron_jy: 0.996, mag_soft_iron_jz: 0.011, 
-mag_soft_iron_kx: -0.016, mag_soft_iron_ky: 0.011, mag_soft_iron_kz: 1.015, 
+mag_offset_x: 29.76, mag_offset_y: 79.62, mag_offset_z: 73.11,
+mag_soft_iron_ix: 0.974, mag_soft_iron_iy: -0.045, mag_soft_iron_iz: -0.004,
+mag_soft_iron_jx: -0.045, mag_soft_iron_jy: 0.995, mag_soft_iron_jz: 0.004,
+mag_soft_iron_kx: -0.004, mag_soft_iron_ky: 0.004, mag_soft_iron_kz: 1.034,
 sensor_read_rate: 400, output_rate_divider: 8,
 adaptive_gain: 1, bias_estimation: 1,
-gain_acc: 0.02, gain_mag: 0.01, bias_alpha: 0.25,
-kAngularVelocityThreshold: 0.053, kAccelerationThreshold: 0.19, kDeltaAngularVelocityThreshold: 0.033,
+gain_acc: 0.02, gain_mag: 0.01, bias_alpha: 0.1,
+kAngularVelocityThreshold: 0.06, kAccelerationThreshold: 0.25, kDeltaAngularVelocityThreshold: 0.05,
 imu_frame_id: "base_imu_link", mag_frame_id: "mag_imu_link",
-gfsr: 2, afsr: 1,
+gfsr: 3, afsr: 1,
 calibration_mode: 0,
-steady_limit: 64,
-world_frame: 0
+steady_limit: 32,
+world_frame: 0,
+use_mag: 1
 }
-
 ```
 
 The mag_offset and mag_soft_iron parameters should be filled with data from your calibration software. Sensor board will auto correct for hard and soft iron errors.
@@ -57,6 +57,8 @@ The frame_id's for the respective Imu and MagneticField messages can be setup wi
 
 `world_frame` 0 for NWU, 1 for ENU, notice that sensor data is not touched, but output orientation quaternion is rotated.
 
+`use_mag` 0 for not using the mag for fusion. magnetometer will still be read and reported but will not be used for orientation measurements. useful for indoor environments. 1 for using the mag for fusion.
+
 See [CALIBRATION.md](https://github.com/altineller/fximu2/blob/master/CALIBRATION.md) for details.
 
 See [HOWTO.md](https://github.com/altineller/fximu2/blob/master/HOWTO.md) on notes for operations.
@@ -76,6 +78,5 @@ _Melih Karakelle_ for advice on the development of the circuit.
 
 - Auxillary magnetometer input
 
-- Use ACM0/1 instead of CAL0/1
 
 

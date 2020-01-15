@@ -25,7 +25,13 @@ int main(void) {
     // accelmag interrupt init
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
     GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, GPIO_PIN_2);
+
+    #if HW_VERSION_CODE == FXIMU2C
     GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+    #else
+    GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    #endif
+
     GPIOIntDisable(GPIO_PORTE_BASE, GPIO_PIN_2);
     GPIOIntClear(GPIO_PORTE_BASE, GPIO_PIN_2);
     GPIOIntRegister(GPIO_PORTE_BASE, accelmag_isr);
@@ -35,7 +41,14 @@ int main(void) {
     // gyro interrupt pin setup
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
     GPIOPinTypeGPIOInput(GPIO_PORTC_BASE, GPIO_PIN_4);
+
+    #if HW_VERSION_CODE == FXIMU2C
     GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+    #else
+    GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    #endif
+
+
     GPIOIntDisable(GPIO_PORTC_BASE, GPIO_PIN_4);
     GPIOIntClear(GPIO_PORTC_BASE, GPIO_PIN_4);
     GPIOIntRegister(GPIO_PORTC_BASE, gyro_isr);
@@ -93,8 +106,8 @@ int main(void) {
             handle_parameters(nh);
 
             // reset sequences
-            read_sequence = 0;
-            pub_sequence = 0;
+            read_sequence = 1;
+            pub_sequence = 1;
 
             // re-set timer, with p_sensor_read_rate from handle_parameters
             TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClkFreq / p_sensor_read_rate);
@@ -299,8 +312,15 @@ int main(void) {
                     pub_mag_msg.publish(&mag_msg);
 
                     if(pub_sequence % 1024 == 0) {
+
                         sprintf(loginfo_buffer, "gyro biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
                         nh.loginfo(loginfo_buffer);
+
+                        /*
+                        sprintf(loginfo_buffer, "accel gain: %.3f", filter_.getGain());
+                        nh.loginfo(loginfo_buffer);
+                        */
+
                     }
 
                     pub_sequence++;
