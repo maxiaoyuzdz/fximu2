@@ -1,5 +1,9 @@
 # Notes for Experimenters of the FXIMU Board
 
+#### install rviz-imu plugin
+
+sudo apt install ros-melodic-rviz-imu-plugin
+
 #### load parameters 
 
 ```rosparam load config/fximu_params.yaml```
