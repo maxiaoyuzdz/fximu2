@@ -9,7 +9,7 @@ FXIMU is a sensor board that uses the NXP semiconductor FXOS8700 accelerometer m
 
 version 2c, has an external i2c port, which can be used to either connect to an auxiliary sensor, or connect to a RPI in host mode, instead of the USB. also the expansion port is a IDC, and it has 2 LEDs instead of one. Currently the LED is on when the sensor is at steady_state.
 
-this version has 3.2mm dia holes, in order to mount it with plastic screws. JTAG position is corrected, generally it is designed to be more spacious, then the previous one, to accomodate better mounting. The board is as big as a standard matchbox.
+This version is designed to be more spacious, then the previous one, to accommodate better mounting. The board is as big as a standard matchbox.
 
 ![alt text](https://raw.githubusercontent.com/altineller/documentation_images/master/fximu/fximu2c.jpg)
 
