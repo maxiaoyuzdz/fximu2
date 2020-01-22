@@ -6,5 +6,5 @@
     </node>
     <node pkg="tf" type="static_transform_publisher" name="map_to_base_imu_link" args="0 0 0 0 0 0 /map /base_imu_link 100"/>
     <!-- rviz -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find fximu2)/launch/rviz/fximu.rviz" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find fximu2)/launch/rviz/fximu.rviz" /> -->
 </launch>

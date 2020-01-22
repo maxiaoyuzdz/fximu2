@@ -9,6 +9,10 @@
 
 // TODO: research LPF and HPF on both gyro and accel
 
+#ifndef HW_VERSION_CODE
+  #error PLEASE SELECT HW_VERSION_CODE in parameters.h
+#endif
+
 int main(void) {
 
     // initialize tiva-c @ 80mhz
@@ -28,7 +32,8 @@ int main(void) {
 
     #if HW_VERSION_CODE == FXIMU2C
     GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-    #else
+    #endif
+    #if HW_VERSION_CODE == FXIMU2B
     GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
     #endif
 
@@ -44,10 +49,10 @@ int main(void) {
 
     #if HW_VERSION_CODE == FXIMU2C
     GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-    #else
+    #endif
+    #if HW_VERSION_CODE == FXIMU2B
     GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
     #endif
-
 
     GPIOIntDisable(GPIO_PORTC_BASE, GPIO_PIN_4);
     GPIOIntClear(GPIO_PORTC_BASE, GPIO_PIN_4);
