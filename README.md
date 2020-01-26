@@ -11,7 +11,7 @@ version 2c, has an external i2c port, which can be used to either connect to an 
 
 This version is designed to be more spacious, then the previous one, to accommodate better mounting. The board is as big as a standard matchbox.
 
-![alt text](https://raw.githubusercontent.com/altineller/documentation_images/master/fximu/fximu2c.jpg)
+![alt text](https://raw.githubusercontent.com/altineller/documentation_images/master/fximu/fximu2C.jpg)
 
 version 2b
 
