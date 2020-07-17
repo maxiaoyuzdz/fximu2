@@ -48,10 +48,8 @@ typedef enum {
 // TODO: get around to remeasuring all these.
 
 #define ACCEL_MG_LSB_2G (0.000244F)
-//#define ACCEL_MG_LSB_4G (0.000488F)
-#define ACCEL_MG_LSB_8G (0.000976F)
-
 #define ACCEL_MG_LSB_4G (0.000483168F)
+#define ACCEL_MG_LSB_8G (0.000976F)
 
 #define MAG_UT_LSB (0.1F)
 

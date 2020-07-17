@@ -109,6 +109,7 @@ int main(void) {
 
             // handle parameters
             handle_parameters(nh);
+            print_defaults(nh);
 
             // reset sequences
             read_sequence = 1;
@@ -117,7 +118,7 @@ int main(void) {
             // re-set timer, with p_sensor_read_rate from handle_parameters
             TimerLoadSet(TIMER0_BASE, TIMER_A, ui32SysClkFreq / p_sensor_read_rate);
 
-            if(!p_calibration_mode) {
+            if(p_calibration_mode != 1) {
 
                 filter_.setDoBiasEstimation(p_bias_estimation);
                 filter_.setDoAdaptiveGain(p_adaptive_gain);
@@ -181,7 +182,7 @@ int main(void) {
 
             currentTime = nh.now();
 
-            if(!initialized_filter_ & !p_calibration_mode) {
+            if(!initialized_filter_ & p_calibration_mode != 1) {
                 markedTime = currentTime;
                 initialized_filter_ = true;
                 continue;
@@ -190,7 +191,11 @@ int main(void) {
             double dt = currentTime.toSec() - markedTime.toSec();
             markedTime = currentTime;
 
-            if(!p_calibration_mode) {
+            // TODO: magnetic field strength. research this.
+            // TODO: string check base_imu_link, etc.
+            // TODO: cal default values
+
+            if(p_calibration_mode != 1) {
 
                 // store gyro values
                 gx = (float) (gyroRD.x * _GYRO_SENSITIVITY * SENSORS_DPS_TO_RADS);
@@ -228,7 +233,7 @@ int main(void) {
 
             if(read_sequence % p_output_rate_divider == 0) {
 
-                if(!p_calibration_mode) {
+                if(p_calibration_mode != 1) {
 
                     imu_msg.header.stamp = currentTime;
                     imu_msg.header.frame_id = imu_link;
@@ -321,10 +326,8 @@ int main(void) {
                         sprintf(loginfo_buffer, "gyro biases: %.3f, %.3f, %.3f", filter_.getAngularVelocityBiasX(), filter_.getAngularVelocityBiasY(), filter_.getAngularVelocityBiasZ());
                         nh.loginfo(loginfo_buffer);
 
-                        /*
                         sprintf(loginfo_buffer, "accel gain: %.3f", filter_.getGain());
                         nh.loginfo(loginfo_buffer);
-                        */
 
                     }
 
@@ -342,7 +345,7 @@ int main(void) {
 
             }
 
-            if(nh_connected && filter_.getSteadyState() && !p_calibration_mode) {
+            if(nh_connected && filter_.getSteadyState() && p_calibration_mode != 1) {
                 MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, GPIO_PIN_0);
             } else {
                 MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 0x0);

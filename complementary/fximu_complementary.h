@@ -19,6 +19,9 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/rom_map.h"
 
+#include "driverlib/flash.h"
+#include "driverlib/eeprom.h"
+
 #include "fxas21002c.h"
 #include "fxos8700cq.h"
 
@@ -108,6 +111,10 @@ void init_system() {
 
     // Peripheral F enable, PF0:LED, PF2:GYRO_RST, PF3:ACC_RST, configured as output
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+
+    // Enable eeprom
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0);
+    EEPROMInit();
 
     // unlock PF0, after enabling GPIOF
     HWREG(GPIO_PORTF_BASE+GPIO_O_LOCK) = GPIO_LOCK_KEY;
